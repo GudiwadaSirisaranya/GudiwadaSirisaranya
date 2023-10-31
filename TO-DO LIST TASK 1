@@ -1,0 +1,85 @@
+class Task:
+    def __init__(self, name, due_date, status="Incomplete"):
+        self.name = name
+        self.due_date = due_date
+        self.status = status
+class ToDoList:
+    def __init__(self):
+        self.tasks = []
+
+    def add_task(self, task):
+        self.tasks.append(task)
+
+    def display_tasks(self):
+        for task in self.tasks:
+            print(f"{task.name} - Due: {task.due_date} - Status: {task.status}")
+
+    def mark_task_complete(self, task_name):
+        for task in self.tasks:
+            if task.name == task_name:
+                task.status = "Complete"
+                break
+def main():
+    todo_list = ToDoList()
+
+    while True:
+        print("\n1. Add Task\n2. Display Tasks\n3. Mark Task as Complete\n4. Exit")
+        choice = input("Enter your choice: ")
+
+        if choice == "1":
+            name = input("Enter task name: ")
+            due_date = input("Enter due date: ")
+            task = Task(name, due_date)
+            todo_list.add_task(task)
+        elif choice == "2":
+            todo_list.display_tasks()
+        elif choice == "3":
+            task_name = input("Enter task name to mark as complete: ")
+            todo_list.mark_task_complete(task_name)
+        elif choice == "4":
+            break
+        else:
+            print("Invalid choice. Try again.")
+
+if __name__ == "__main__":
+    main()
+import tkinter as tk
+from tkinter import messagebox
+
+class ToDoApp:
+    def __init__(self, master):
+        self.master = master
+        self.master.title("To-Do List")
+        
+        self.tasks = []
+
+        # Create widgets
+        self.task_entry = tk.Entry(self.master, width=30)
+        self.add_button = tk.Button(self.master, text="Add Task", command=self.add_task)
+        self.display_button = tk.Button(self.master, text="Display Tasks", command=self.display_tasks)
+        
+        # Pack widgets
+        self.task_entry.pack(pady=10)
+        self.add_button.pack(pady=5)
+        self.display_button.pack(pady=5)
+
+    def add_task(self):
+        task_name = self.task_entry.get()
+        if task_name:
+            self.tasks.append(task_name)
+            messagebox.showinfo("Task Added", f"Task '{task_name}' added successfully.")
+            self.task_entry.delete(0, tk.END)
+        else:
+            messagebox.showwarning("Empty Task", "Task name cannot be empty.")
+
+    def display_tasks(self):
+        if self.tasks:
+            task_list = "\n".join(self.tasks)
+            messagebox.showinfo("Tasks", f"Tasks:\n{task_list}")
+        else:
+            messagebox.showinfo("No Tasks", "No tasks to display.")
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = ToDoApp(root)
+    root.mainloop()
